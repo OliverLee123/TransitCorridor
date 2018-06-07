@@ -89,19 +89,6 @@ void Corridor::InitialStopLoad(){
 			stopFlow[row] = stopFlow[row]+stopHopSM->smArray[i].stopHop.totalFlow;	
 		}
 	}
-	ofstream outFile("C:\\Users\\LYC\\Desktop\\Distribution.csv",ios::out); 
-	if(!outFile)
-	{
-		std::cout<<"error !"<<endl;
-	}
-	else
-	{
-		for(size_t i=0;i<stopLoad.size();i++)
-		{
-			outFile<<i<<","<<stopLoad[i].m_load<<","<<stopFlow[i].m_flow<<endl;
-		}
-	}
-	outFile.close();
 }
 
 void Corridor::SetPeak(int a,int b,int c,int d){
@@ -195,7 +182,7 @@ double Corridor::GetProValue(double p,bool ifLoad,int chTime){
 int Corridor::GetID(string name,string line){
 	int flag = -1;
 	int lineType;
-	if(line.substr(0,4)=="µØÌú")
+	if(line.substr(0,4)=="åœ°é“")
 		lineType = 1;
 	else
 		lineType = 0;
@@ -211,7 +198,7 @@ int Corridor::GetID(string name,string line){
 }
 	
 vector<int> Corridor::GetTopHotStop(int n,int chooseTime){
-	//chooseTime 0-ÉÏÎç 1-ÏÂÎç ÆäËû-Áè³¿
+	//chooseTime 0-ä¸Šåˆ 1-ä¸‹åˆ å…¶ä»–-å‡Œæ™¨
 	vector<int> _id;
 	Trituple * temp = stopHopSM->smArray;
 	if(chooseTime == 0)
@@ -251,7 +238,7 @@ int Corridor::_GetMostPopStop(int startID,double threshold,int chooseTime,const 
 	vector<double> popFlow;
 
 	for(int i =0;i<stopHopSM->Terms;i++)
-	{//chooseTime 0-ÉÏÎç 1-ÏÂÎç ÆäËû-Áè³¿
+	{//chooseTime 0-ä¸Šåˆ 1-ä¸‹åˆ å…¶ä»–-å‡Œæ™¨
 		double flow = 0;
 		if(chooseTime==0)
 		{
@@ -276,9 +263,9 @@ int Corridor::_GetMostPopStop(int startID,double threshold,int chooseTime,const 
 		}
 		if(stopHopSM->smArray[i].row == startID
 			&&flow>threshold
-			&&ifCor[stopHopSM->smArray[i].row*stopsLines.size()+stopHopSM->smArray[i].col]==false)//×ÜµÄÁ÷Á¿ÏŞÖÆ
+			&&ifCor[stopHopSM->smArray[i].row*stopsLines.size()+stopHopSM->smArray[i].col]==false)//æ€»çš„æµé‡é™åˆ¶
 		{
-			if(corridor.size()>0)//·ÀÖ¹·´ÏòËÑË÷
+			if(corridor.size()>0)//é˜²æ­¢åå‘æœç´¢
 				if(stopHopSM->smArray[i].col == corridor[corridor.size()-1].stopStartID)
 					continue;
 			popStopID.push_back(i);
@@ -309,7 +296,7 @@ int Corridor::GetMostPopStop(int startID,double threshold,int chooseTime,const b
 	vector<double> popFlow;
 
 	for(int i =0;i<stopHopSM->Terms;i++)
-	{//chooseTime 0-ÉÏÎç 1-ÏÂÎç ÆäËû-Áè³¿
+	{//chooseTime 0-ä¸Šåˆ 1-ä¸‹åˆ å…¶ä»–-å‡Œæ™¨
 		double flow = 0;
 		if(chooseTime==0)
 		{
@@ -334,9 +321,9 @@ int Corridor::GetMostPopStop(int startID,double threshold,int chooseTime,const b
 		}
 		if(stopHopSM->smArray[i].row == startID
 			&&flow>threshold
-			&&ifCor[stopHopSM->smArray[i].row*stopsLines.size()+stopHopSM->smArray[i].col]==false)//×ÜµÄÁ÷Á¿ÏŞÖÆ
+			&&ifCor[stopHopSM->smArray[i].row*stopsLines.size()+stopHopSM->smArray[i].col]==false)//æ€»çš„æµé‡é™åˆ¶
 		{
-			if(corridor.size()>0)//·ÀÖ¹·´ÏòËÑË÷
+			if(corridor.size()>0)//é˜²æ­¢åå‘æœç´¢
 				if(stopHopSM->smArray[i].col == corridor[corridor.size()-1].stopStartID)
 					continue;
 			popStopID.push_back(i);
@@ -427,7 +414,7 @@ int Corridor::SearchHotLineFromStop(int startID,double threshold,double _thresho
 					
 			seg.corridorID = corridorID;
 			corridor.push_back(seg);
-			if(IfTerminus(stopHopSM->smArray[i].stopHop.stopEnd))//ËÑË÷µ½ÁËÄ³ÌõÏßÂ·µÄÖÕµãÕ¾
+			if(IfTerminus(stopHopSM->smArray[i].stopHop.stopEnd))//æœç´¢åˆ°äº†æŸæ¡çº¿è·¯çš„ç»ˆç‚¹ç«™
 				return -1;
 			else
 				return stopHopSM->smArray[i].col;
@@ -449,8 +436,8 @@ int Corridor::_SearchHotLineFromStop(int startID,double loadRateThre,double flow
 	{
 		if(stopHopSM->smArray[i].row == startID)
 		{
-			double load = 0;//ÆğÊ¼Õ¾
-			double _load = 0;//ÖÕµãÕ¾
+			double load = 0;//èµ·å§‹ç«™
+			double _load = 0;//ç»ˆç‚¹ç«™
 			double flow = 0;
 			double _flow = 0;
 			if(chooseTime==0)
@@ -478,7 +465,7 @@ int Corridor::_SearchHotLineFromStop(int startID,double loadRateThre,double flow
 			if(rate > loadRateThre &&ifCor[stopHopSM->smArray[i].row*stopsLines.size()+stopHopSM->smArray[i].col] == false 
 				&& flow > flowThre && _flow > flowThre)
 			{
-				if(corridor.size()>0)//·ÀÖ¹·´ÏòËÑË÷
+				if(corridor.size()>0)//é˜²æ­¢åå‘æœç´¢
 					if(stopHopSM->smArray[i].col == corridor[corridor.size()-1].stopStartID)
 						continue;
 				loads.push_back(_load);
@@ -505,8 +492,8 @@ int Corridor::_SearchHotLineFromStop(int startID,double loadRateThre,double flow
 	if(flag < 0)
 		return -1;
 
-	double val = 0;//Â·¶ÎµÄload
-	double _val = 0;//Â·¶ÎµÄflow
+	double val = 0;//è·¯æ®µçš„load
+	double _val = 0;//è·¯æ®µçš„flow
 
 	if(chooseTime==0)
 	{
@@ -546,7 +533,7 @@ int Corridor::_SearchHotLineFromStop(int startID,double loadRateThre,double flow
 
 	seg.corridorID = corridorID;
 	corridor.push_back(seg);
-	if(IfTerminus(stopHopSM->smArray[flag].stopHop.stopEnd))//ËÑË÷µ½ÁËÄ³ÌõÏßÂ·µÄÖÕµãÕ¾
+	if(IfTerminus(stopHopSM->smArray[flag].stopHop.stopEnd))//æœç´¢åˆ°äº†æŸæ¡çº¿è·¯çš„ç»ˆç‚¹ç«™
 		return -1;
 	else
 		return stopHopSM->smArray[flag].col;
@@ -588,7 +575,7 @@ void Corridor::SearchCorridorFromLine(double threshold,double _threshold,int cho
 						flow = stopHopSM->smArray[k].stopHop.totalFlow.e_flow;
 				}
 				if(stopHopSM->smArray[k].row == row&&flow>threshold&&ifCor[stopHopSM->smArray[k].row*stopsLines.size()+stopHopSM->smArray[k].col]==false)
-				{//Ñ°ÕÒÃ¿ÌõÏßÂ·µÚÒ»¸öÂú×ãÌõ¼şµÄÕ¾µã×÷ÎªËÑË÷Æğµã
+				{//å¯»æ‰¾æ¯æ¡çº¿è·¯ç¬¬ä¸€ä¸ªæ»¡è¶³æ¡ä»¶çš„ç«™ç‚¹ä½œä¸ºæœç´¢èµ·ç‚¹
 					startID = row;
 					break;
 				}
@@ -681,7 +668,7 @@ void Corridor::DeleteCompleteOverlap(){
 						corridor[j].side[b].x,corridor[j].side[b].y,corridor[j].side[e].x,corridor[e].side[b].y,0.5))
 					{
 						for(size_t n =b;n<=e;n++)
-						{//ÕâÀïÓĞÎÊÌâ£¬ÒòÎªÍêÈ«ÖØµş¿ÉÄÜ¶şÕßÖØºÏµãµÄ¸öÊı²»Ò»ÖÂ£¬ÕâÀïÍ³Ò»²ÉÓÃµÚÒ»¸öµãµÄÏà¼Ó£¬´æÔÚÎó²î£¬µ«ÊÇÎÒ¹À¼ÆÓ°Ïì²»´ó
+						{//è¿™é‡Œæœ‰é—®é¢˜ï¼Œå› ä¸ºå®Œå…¨é‡å å¯èƒ½äºŒè€…é‡åˆç‚¹çš„ä¸ªæ•°ä¸ä¸€è‡´ï¼Œè¿™é‡Œç»Ÿä¸€é‡‡ç”¨ç¬¬ä¸€ä¸ªç‚¹çš„ç›¸åŠ ï¼Œå­˜åœ¨è¯¯å·®ï¼Œä½†æ˜¯æˆ‘ä¼°è®¡å½±å“ä¸å¤§
 							corridor[j].side[n].value += corridor[i].side[0].value;
 						}
 						corridor.erase(corridor.begin()+i);
@@ -731,7 +718,7 @@ void Corridor::MergeCorridor(int chTime,bool ifLoad){
 				&&CosSimilarity(corridor[i].side[corridor[i].side.size()-2].x,corridor[i].side[corridor[i].side.size()-2].y,
 				corridor[i].side[corridor[i].side.size()-1].x,corridor[i].side[corridor[i].side.size()-1].y,
 				corridor[j].side[0].x,corridor[j].side[0].y,
-				corridor[j].side[1].x,corridor[j].side[1].y,0.8))//Õ¾µãÖØºÏ
+				corridor[j].side[1].x,corridor[j].side[1].y,0.8))//ç«™ç‚¹é‡åˆ
 				||
 				(PtDis(corridor[i].side[corridor[i].side.size()-1].x,
 				corridor[i].side[corridor[i].side.size()-1].y,
@@ -741,7 +728,7 @@ void Corridor::MergeCorridor(int chTime,bool ifLoad){
 				corridor[j].side[0].x,corridor[j].side[0].y,0.9)||
 				CosSimilarity(corridor[i].side[corridor[i].side.size()-1].x,corridor[i].side[corridor[i].side.size()-1].y,
 				corridor[j].side[0].x,corridor[j].side[0].y,
-				corridor[j].side[1].x,corridor[j].side[1].y,0.9)))))//Á¬½ÓÁ½¸ö×ßÀÈ,corridor[i]Á¬½Ócorridor[j]
+				corridor[j].side[1].x,corridor[j].side[1].y,0.9)))))//è¿æ¥ä¸¤ä¸ªèµ°å»Š,corridor[i]è¿æ¥corridor[j]
 			{
 				if(IfFlowShared(i,j,0,0.3,chTime,ifLoad))
 				{
@@ -897,8 +884,8 @@ void Corridor::CorridorToFile(string filePath){
 bool Corridor::ifCorContainTrip(vector<string> trip,int k){
 	
 	
-	double totalCount = 0.0;//trip°üº¬µÄ×ÜÕ¾µãÊı
-	double cCount = 0.0;//¸ÃtripÍ¨¹ı×ßÀÈµÄ×ÜÕ¾µãÊı
+	double totalCount = 0.0;//tripåŒ…å«çš„æ€»ç«™ç‚¹æ•°
+	double cCount = 0.0;//è¯¥tripé€šè¿‡èµ°å»Šçš„æ€»ç«™ç‚¹æ•°
 	
 	for(size_t i = 0;i<trip.size();i++)
 	{
@@ -1152,9 +1139,9 @@ void Corridor::GetTopkCorridorTrip(int topK){
 
 int Corridor::TopKCorridorToFile(string filePath,int k,bool ifLoadCor){
 
-	//·µ»ØtopK×ßÀÈ°üº¬µÄÕ¾µãÊı
+	//è¿”å›topKèµ°å»ŠåŒ…å«çš„ç«™ç‚¹æ•°
 
-	int stopCount = k;//Í³¼ÆÃ¿Ìõ×ßÀÈµÄµÚÒ»¸öµã
+	int stopCount = k;//ç»Ÿè®¡æ¯æ¡èµ°å»Šçš„ç¬¬ä¸€ä¸ªç‚¹
 
 	if (corridor.size()<k)
 	{
@@ -1165,7 +1152,7 @@ int Corridor::TopKCorridorToFile(string filePath,int k,bool ifLoadCor){
 	for(size_t i=0;i<k;i++)
 	{
 
-		for(size_t j=1;j<corridor[i].side.size()-1;j++)//´ÓµÚÒ»¸öµã¿ªÊ¼Í³¼Æ
+		for(size_t j=1;j<corridor[i].side.size()-1;j++)//ä»ç¬¬ä¸€ä¸ªç‚¹å¼€å§‹ç»Ÿè®¡
 		{
 			if (corridor[i].side[j].stopStart != corridor[i].side[j+1].stopStart)
 			{
@@ -1243,7 +1230,7 @@ void Corridor::InitStopHop(string stopPath){
 				stopLines.lines.push_back(field);
 			flag++;
         }  
-		if(stopLines.lines[0].substr(0,4) == "µØÌú")
+		if(stopLines.lines[0].substr(0,4) == "åœ°é“")
 			stopLines.lineType = 1;
 		else
 			stopLines.lineType = 0;
@@ -1284,7 +1271,7 @@ void Corridor::InitStopHop(string stopPath){
 				{
 					//int index = ComparePts(totalStopSides[i][j].side,stopHopSM->smArray[k].stopHop.sharedLines);
 					int index = 0;
-					if(index>=0)//¼¸ºÎÉÏÍ¬Ò»Ìõ±ß
+					if(index>=0)//å‡ ä½•ä¸ŠåŒä¸€æ¡è¾¹
 					{
 						stopHopSM->smArray[k].stopHop.sharedLines[index].lineName.push_back(totalLineStops[i][j].lineName);
 						stopHopSM->smArray[k].stopHop.sharedLines[index].segFlow.m_flow += totalLineStops[i][j].flow.m_flow;
@@ -1294,7 +1281,7 @@ void Corridor::InitStopHop(string stopPath){
 						stopHopSM->smArray[k].stopHop.sharedLines[index].segLoad.a_load += totalLineStops[i][j].load.a_load;
 						stopHopSM->smArray[k].stopHop.sharedLines[index].segLoad.e_load += totalLineStops[i][j].load.e_load;
 					}
-					else//¼¸ºÎÉÏµÄĞÂÒ»Ìõ±ß
+					else//å‡ ä½•ä¸Šçš„æ–°ä¸€æ¡è¾¹
 					{
 						SideSeg seg;
 						seg.lineName.push_back(totalLineStops[i][j].lineName);
@@ -1419,7 +1406,7 @@ vector<double> Corridor::GetFlowWeight(int n){
 
 
 void Corridor::CalFlowByWeight(vector<string> trip,vector<double> weight,time_t t){
-	int wCount = 0;//Load »ùÓÚlegÀ´Í³¼Æ Flow»ùÓÚTrip£¨¸øÃ¿¸östop¼ÓÈ¨µÃµ½£©
+	int wCount = 0;//Load åŸºäºlegæ¥ç»Ÿè®¡ FlowåŸºäºTripï¼ˆç»™æ¯ä¸ªstopåŠ æƒå¾—åˆ°ï¼‰
 	for(size_t i = 0;i<trip.size();i++)
 	{
 		vector<string> fields; 
@@ -1456,13 +1443,13 @@ void Corridor::CalFlowByWeight(vector<string> trip,vector<double> weight,time_t 
 							flag = 0;
 						if(flag > 0)
 						{
-							if(aboardTime_T>t+3600*mPeakBegin && aboardTime_T<t+3600*mPeakEnd )//Ôç¸ß·å 7µãµ½9µã
+							if(aboardTime_T>t+3600*mPeakBegin && aboardTime_T<t+3600*mPeakEnd )//æ—©é«˜å³° 7ç‚¹åˆ°9ç‚¹
 							{
 								subwayLineStops[i][j].flow.m_flow += weight.size()*weight[wCount];
 								subwayLineStops[i][j].load.m_load += flag;
 							}
 							else if(aboardTime_T>t+3600*aPeakBegin && aboardTime_T<t+3600*aPeakEnd)
-							{//Íí¸ß·å 17£º30µ½19£º30							{
+							{//æ™šé«˜å³° 17ï¼š30åˆ°19ï¼š30							{
 								subwayLineStops[i][j].flow.a_flow += weight.size()*weight[wCount];
 								subwayLineStops[i][j].load.a_load += flag;
 							}
@@ -1965,7 +1952,7 @@ void Corridor::InitLineStopSide(string busSegPath,string subwaySegPath){
 	}
 	fin_1.close();
 
-	indexF = 0;//ÉÏÒ»´ÎµÄË÷Òı
+	indexF = 0;//ä¸Šä¸€æ¬¡çš„ç´¢å¼•
 	
 	for(size_t i=0;i<busLineStops.size();i++)
 	{
@@ -2068,8 +2055,8 @@ void Corridor::InitLineStopSide(string busSegPath,string subwaySegPath){
 
 
 void Corridor::_SearchCorridorFromLine(double coreThre,double loadRateThre,double flowThre,int chooseTime,const bool ifLoad){
-	//µÚÒ»¸öãĞÖµ±íÊ¾ÖÖ×ÓÕ¾µãµÄãĞÖµ
-	//µÚ¶ş¸öãĞÖµ±íÊ¾ËÑË÷¹²ÏíloadµÄãĞÖµ
+	//ç¬¬ä¸€ä¸ªé˜ˆå€¼è¡¨ç¤ºç§å­ç«™ç‚¹çš„é˜ˆå€¼
+	//ç¬¬äºŒä¸ªé˜ˆå€¼è¡¨ç¤ºæœç´¢å…±äº«loadçš„é˜ˆå€¼
 	std::cout <<"-------------------------------------------"<< std::endl;
 	std::cout <<"Start Search Corridor From Line..."<< std::endl;
 	for(int i = 0;i<totalLineStops.size();i++)
@@ -2077,7 +2064,7 @@ void Corridor::_SearchCorridorFromLine(double coreThre,double loadRateThre,doubl
 		int startID = -1;
 		for(int j = 0;j<totalLineStops[i].size()-1;j++)
 		{	
-			int row = GetID(totalLineStops[i][j].stopName,totalLineStops[i][j].lineName);//µØÌúÕ¾ºÍ¹«½»Õ¾ÓĞÍ¬ÃûÇé¿ö
+			int row = GetID(totalLineStops[i][j].stopName,totalLineStops[i][j].lineName);//åœ°é“ç«™å’Œå…¬äº¤ç«™æœ‰åŒåæƒ…å†µ
 			if(row <0 )
 				continue;
 			double load = 0;
@@ -2095,7 +2082,7 @@ void Corridor::_SearchCorridorFromLine(double coreThre,double loadRateThre,doubl
 			}
 			if(load>coreThre)
 				//&&ifCor[row*stopsLines.size()+row]==false)
-			{//Ñ°ÕÒÃ¿ÌõÏßÂ·µÚÒ»¸öÂú×ãÌõ¼şµÄÕ¾µã×÷ÎªËÑË÷Æğµã
+			{//å¯»æ‰¾æ¯æ¡çº¿è·¯ç¬¬ä¸€ä¸ªæ»¡è¶³æ¡ä»¶çš„ç«™ç‚¹ä½œä¸ºæœç´¢èµ·ç‚¹
 				//ifCor[row*stopsLines.size()+row] =true;
 				startID = row;
 				break;
